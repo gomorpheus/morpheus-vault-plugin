@@ -46,7 +46,7 @@ class VaultCredentialProvider implements CredentialProvider {
             //we gotta fetch from Vault
             if(!secretPathSuffix.endsWith('/')) {
                 secretPathSuffix = secretPathSuffix + '/'
-            }
+            }f
             String vaultPath="/v1/secret/data/" + secretPathSuffix + formatApiName(credential.name)
             def apiResults = apiClient.callJsonApi(integration.serviceUrl,vaultPath,new HttpApiClient.RequestOptions(headers: ['X-VAULT-TOKEN': integration.serviceToken]),'GET')
             log.info("Received Dataset: ${apiResults.data.data?.data}")
@@ -184,7 +184,7 @@ class VaultCredentialProvider implements CredentialProvider {
      */
     @Override
     Icon getIcon() {
-        return new Icon(path:"vault-black.svg", darkPath: "vault-white.svg")
+        return new Icon(path:"hashicorpvault-black.svg", darkPath: "hashicorpvault-white.svg")
     }
 
     /**
