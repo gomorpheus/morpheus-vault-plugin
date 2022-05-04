@@ -73,7 +73,7 @@ jar {
 				'Morpheus-Logo-Dark': 'assets/hashicorpvault-white.svg',
 				'Morpheus-Color': '#ffffff',
 				'Morpheus-Labels': 'Plugin, Credentials, Vault',
-				'Morpheus-Repo': 'https://github.com/gomorpheus/morpheus-plugin-core',
+				'Morpheus-Repo': 'https://github.com/gomorpheus/morpheus-vault-plugin',
 				'Morpheus-Min-Appliance-Version': "5.5.0"
 		)
 	}
