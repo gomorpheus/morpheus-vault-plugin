@@ -172,8 +172,8 @@ class VaultCredentialProvider implements CredentialProvider {
     List<OptionType> getIntegrationOptionTypes() {
         return [
                 new OptionType(code: 'vault.serviceUrl', name: 'Service URL', inputType: OptionType.InputType.TEXT, fieldName: 'serviceUrl', fieldLabel: 'API Url', fieldContext: 'domain', displayOrder: 0),
-                new OptionType(code: 'vault.serviceToken', name: 'Service Username', inputType: OptionType.InputType.PASSWORD, fieldName: 'serviceToken', fieldLabel: 'Username', fieldContext: 'domain', displayOrder: 1),
-                new OptionType(code: 'vault.secretPath', name: 'Secret Path', inputType: OptionType.InputType.TEXT, defaultValue: 0,placeHolderText: 'morpheus-credentials/', fieldName: 'secretPath', fieldLabel: 'Secret Path', fieldContext: 'config', displayOrder: 2)
+                new OptionType(code: 'vault.serviceToken', name: 'Service Token', inputType: OptionType.InputType.PASSWORD, fieldName: 'serviceToken', fieldLabel: 'Token', fieldContext: 'domain', displayOrder: 1),
+                new OptionType(code: 'vault.secretPath', name: 'Secret Path', inputType: OptionType.InputType.TEXT,defaultValue: 'morpheus-credentials/', fieldName: 'secretPath', fieldLabel: 'Secret Path', fieldContext: 'config', displayOrder: 2)
         ]
     }
 
