@@ -160,8 +160,19 @@ class VaultCredentialProvider implements CredentialProvider {
      */
     @Override
     ServiceResponse<Map> verify(AccountIntegration integration, Map opts) {
+        HttpApiClient apiClient = new HttpApiClient()
+        try {
 
-        return ServiceResponse.success()
+            def apiResults = apiClient.callJsonApi(integration.serviceUrl,'/v1/sys/health',new HttpApiClient.RequestOptions(),'GET')
+            if(apiResults.success) {
+                ServiceResponse<Map> response = new ServiceResponse<>(true,null,null,[:])
+                return response
+            } else {
+                return ServiceResponse.error(apiResults.error,null,[:])
+            }
+        } finally {
+            apiClient.shutdownClient()
+        }
     }
 
     /**
