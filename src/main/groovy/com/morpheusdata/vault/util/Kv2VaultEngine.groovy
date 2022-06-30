@@ -23,6 +23,11 @@ class Kv2VaultEngine extends AbstractVaultEngine {
     return this._save(vaultPath, body, vaultUrl, vaultToken)
   }
   
+  @Override
+  public String getFullVaultPath(String engineMount, String secretPathSuffix, String name, Map opts = [:]) {
+    return engineMount + "/data/" + secretPathSuffix + "/" + name
+  }
+  
   public String getDescription() {
     return "KV Version 2 Vault Engine"
   }
@@ -31,7 +36,7 @@ class Kv2VaultEngine extends AbstractVaultEngine {
     return "KV Version 2"
   }
   
-  public String getDefaultSecretMount() {
+  public String getDefaultEngineMount() {
     return "secret"
   }
   

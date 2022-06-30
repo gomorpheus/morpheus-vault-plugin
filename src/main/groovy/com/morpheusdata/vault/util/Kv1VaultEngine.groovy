@@ -30,7 +30,7 @@ class Kv1VaultEngine extends AbstractVaultEngine {
     return "KV Version 1"
   }
   
-  public String getDefaultSecretMount() {
+  public String getDefaultEngineMount() {
     return "secret"
   }
   

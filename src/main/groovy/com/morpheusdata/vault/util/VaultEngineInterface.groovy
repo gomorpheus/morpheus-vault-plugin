@@ -13,7 +13,7 @@ public interface VaultEngineInterface {
 
   public String getName()
 
-  public String getDefaultSecretMount()
+  public String getDefaultEngineMount()
 
   public String getCode()
 

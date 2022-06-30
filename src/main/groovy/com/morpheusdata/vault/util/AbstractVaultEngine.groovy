@@ -14,12 +14,12 @@ abstract class AbstractVaultEngine implements VaultEngineInterface {
   public abstract ServiceResponse read(String vaultPath, String vaultUrl, String vaultToken)
 
   public abstract ServiceResponse save(String vaultPath, Map value, String vaultUrl, String vaultToken)
-  
+      
   public abstract String getDescription()
   
   public abstract String getName()
   
-  public abstract String getDefaultSecretMount()
+  public abstract String getDefaultEngineMount()
   
   AbstractVaultEngine(String code) {
     this.code = code
@@ -27,6 +27,25 @@ abstract class AbstractVaultEngine implements VaultEngineInterface {
   
   public String getCode() {
     return this.code
+  }
+  
+  public String getFullVaultPath(String engineMount, String secretPathSuffix, String name, Map opts = [:]) {
+    return engineMount + "/" + secretPathSuffix + "/" + name
+  }
+  
+  public ServiceResponse checkHealth(String vaultUrl) {
+    HttpApiClient apiClient = new HttpApiClient()
+    try {
+      def apiResults = apiClient.callJsonApi(vaultUrl,'/v1/sys/health',new HttpApiClient.RequestOptions(),'GET')
+      if(apiResults.success) {
+        ServiceResponse<Map> response = new ServiceResponse<>(true,null,null,[:])
+        return response
+      } else {
+        return ServiceResponse.error(apiResults.error,null,[:])
+      }
+    } finally {
+      apiClient.shutdownClient()
+    }
   }
     
   private String getBasePath(String version) {
