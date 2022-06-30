@@ -18,8 +18,11 @@ class HashiCorpVaultPlugin extends Plugin {
 
 	@Override
 	void initialize() {
+		HashiCorpVaultOptionSourceProvider optionSourceProvider = new HashiCorpVaultOptionSourceProvider(this, morpheus)
+
 		this.pluginProviders.put("hashicorp-vault-credentials", new HashiCorpVaultCredentialProvider(this, morpheus))
 		this.pluginProviders.put("hashicorp-vault-cypher", new HashiCorpVaultCypherProvider(this,morpheus))
+		this.pluginProviders.put(optionSourceProvider.code, optionSourceProvider)
 		this.setName("HashiCorp Vault")
 		this.setDescription("HashiCorp Vault Plugin")
 		this.setAuthor("Morpheus")

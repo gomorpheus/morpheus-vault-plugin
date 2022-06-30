@@ -27,11 +27,14 @@ import com.morpheusdata.model.Icon
 import com.morpheusdata.model.OptionType
 import com.morpheusdata.response.ServiceResponse
 import groovy.util.logging.Slf4j
+import com.morpheusdata.vault.util.*
 
 @Slf4j
 class HashiCorpVaultCredentialProvider implements CredentialProvider {
     MorpheusContext morpheusContext
     Plugin plugin
+    
+    public static final DEFAULT_SECRET_PATH = "morpheus-credentials/"
 
     HashiCorpVaultCredentialProvider(Plugin plugin, MorpheusContext morpheusContext) {
         this.morpheusContext = morpheusContext
@@ -56,7 +59,7 @@ class HashiCorpVaultCredentialProvider implements CredentialProvider {
      */
     @Override
     ServiceResponse<Map> loadCredentialData(AccountIntegration integration, AccountCredential credential, Map opts) {
-        String secretPathSuffix = integration.getConfigProperty("secretPath") ?: "morpheus-credentials/"
+        String secretPathSuffix = getSecretPathSuffix(integration)
         HttpApiClient apiClient = new HttpApiClient()
         try {
             //we gotta fetch from Vault
@@ -86,7 +89,7 @@ class HashiCorpVaultCredentialProvider implements CredentialProvider {
      */
     @Override
     ServiceResponse<AccountCredential> deleteCredential(AccountIntegration integration, AccountCredential credential, Map opts) {
-        String secretPathSuffix = integration.getConfigProperty("secretPath") ?: "morpheus-credentials/"
+        String secretPathSuffix = getSecretPathSuffix(integration)
         HttpApiClient apiClient = new HttpApiClient()
         try {
             //we gotta fetch from Vault
@@ -115,7 +118,7 @@ class HashiCorpVaultCredentialProvider implements CredentialProvider {
      */
     @Override
     ServiceResponse<AccountCredential> createCredential(AccountIntegration integration, AccountCredential credential, Map opts) {
-        String secretPathSuffix = integration.getConfigProperty("secretPath") ?: "morpheus-credentials/"
+        String secretPathSuffix = getSecretPathSuffix(integration)
         HttpApiClient apiClient = new HttpApiClient()
         try {
             //we gotta fetch from Vault
@@ -200,7 +203,19 @@ class HashiCorpVaultCredentialProvider implements CredentialProvider {
         return [
                 new OptionType(code: 'vault.serviceUrl', name: 'Service URL', inputType: OptionType.InputType.TEXT, fieldName: 'serviceUrl', fieldLabel: 'API Url', fieldContext: 'domain', displayOrder: 0),
                 new OptionType(code: 'vault.serviceToken', name: 'Service Token', inputType: OptionType.InputType.PASSWORD, fieldName: 'serviceToken', fieldLabel: 'Token', fieldContext: 'domain', displayOrder: 1),
-                new OptionType(code: 'vault.secretPath', name: 'Secret Path', inputType: OptionType.InputType.TEXT,defaultValue: 'morpheus-credentials/', fieldName: 'secretPath', fieldLabel: 'Secret Path', fieldContext: 'config', displayOrder: 2)
+                new OptionType(
+                  name: 'Secret Engines',
+                  code: 'vault.secretEngines',
+                  fieldName: 'secretEngine',
+                  optionSource: 'engines',
+                  displayOrder: 2,
+                  fieldLabel: 'HashiCorp Vault Secret Engine',
+                  inputType: OptionType.InputType.SELECT,
+                  defaultValue: HashiCorpVaultPluginUtil.DEFAULT_ENGINE_CODE,
+                  required:true
+              ),
+              new OptionType(code: 'vault.engineMount', name: 'Engine Mount', inputType: OptionType.InputType.TEXT, fieldName: 'engineMount', fieldLabel: 'Engine Mount', fieldContext: 'config', displayOrder: 3),
+              new OptionType(code: 'vault.secretPath', name: 'Secret Path', inputType: OptionType.InputType.TEXT,defaultValue: DEFAULT_SECRET_PATH, fieldName: 'secretPath', fieldLabel: 'Secret Path', fieldContext: 'config', displayOrder: 4)
         ]
     }
 
@@ -264,4 +279,9 @@ class HashiCorpVaultCredentialProvider implements CredentialProvider {
         }
         return URLEncoder.encode(rtn)
     }
+    
+    private static getSecretPathSuffix(AccountIntegration integration) {
+      return integration.getConfigProperty("secretPath") ?: DEFAULT_SECRET_PATH
+    }
+    
 }
