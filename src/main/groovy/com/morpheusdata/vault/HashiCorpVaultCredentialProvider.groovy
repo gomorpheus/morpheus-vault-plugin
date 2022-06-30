@@ -1,3 +1,19 @@
+/**
+
+Change plugin settings to be select list of support versions. 
+Default is all but can select a version. 
+If selected then this auto determins what engine to use both in cypher and in credentials integrations however if left to all then can choose which engine to use via integration or cypher approach
+
+in addition to option types can configure on which mountpath a engine is using.  
+
+Need a  utility class that both credentials and cypher modules can use that determins what secret engine to use
+
+Probs should update base read,delete and save utility to use the more user friendly apiClient. 
+
+Then re-record a new video for everything :D
+
+**/
+
 package com.morpheusdata.vault
 
 import com.morpheusdata.core.CredentialProvider
@@ -13,11 +29,11 @@ import com.morpheusdata.response.ServiceResponse
 import groovy.util.logging.Slf4j
 
 @Slf4j
-class VaultCredentialProvider implements CredentialProvider {
+class HashiCorpVaultCredentialProvider implements CredentialProvider {
     MorpheusContext morpheusContext
     Plugin plugin
 
-    VaultCredentialProvider(Plugin plugin, MorpheusContext morpheusContext) {
+    HashiCorpVaultCredentialProvider(Plugin plugin, MorpheusContext morpheusContext) {
         this.morpheusContext = morpheusContext
         this.plugin = plugin
     }
@@ -224,7 +240,7 @@ class VaultCredentialProvider implements CredentialProvider {
      */
     @Override
     String getCode() {
-        return "vault"
+        return "hashicorp-vault-credentials"
     }
 
     /**
@@ -235,7 +251,7 @@ class VaultCredentialProvider implements CredentialProvider {
      */
     @Override
     String getName() {
-        return "Vault"
+        return "HashiCorp Vault Credentials"
     }
 
     static protected formatApiName(String name) {
