@@ -269,7 +269,7 @@ class HashiCorpVaultCredentialProvider implements CredentialProvider {
   }
   
   private String getVaultToken(AccountIntegration integration) {
-    if (integration.serviceUrl) {
+    if (integration.serviceToken) {
       return integration.serviceToken
     } else {
       return HashiCorpVaultPluginUtil.getVaultToken(this.morpheusContext, this.plugin)
