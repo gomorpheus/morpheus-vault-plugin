@@ -82,6 +82,7 @@ class HashiCorpVaultCredentialProvider implements CredentialProvider {
     if(response.getSuccess()) {
       return new ServiceResponse<>(true,null,null,credential)
     } else {
+      log.error("Error Deleting HashiCorp Vault Credential {}", response.getError())
       return ServiceResponse.error(response.getError(),null,credential)
     }
   }

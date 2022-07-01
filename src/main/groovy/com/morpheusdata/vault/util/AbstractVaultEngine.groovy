@@ -65,7 +65,7 @@ abstract class AbstractVaultEngine implements VaultEngineInterface {
       if(apiResults.success) {
         response = ServiceResponse.success(apiResults.data as Map)
       } else {
-        response = ServiceResponse.error(apiResults.error)
+        response = ServiceResponse.error(apiResults.error ?: apiResults.content ?: "An unknown error occured deleting the secret from HashiCorp Vault")
       }
     } catch(Exception ex) {
       response = ServiceResponse.error("An error occured deleting the secret from HashiCorp Vault")
@@ -86,7 +86,7 @@ abstract class AbstractVaultEngine implements VaultEngineInterface {
       if(apiResults.success) {
         response = ServiceResponse.success(apiResults.data as Map)
       } else {
-        response = ServiceResponse.error(apiResults.error)
+        response = ServiceResponse.error(apiResults.error ?: apiResults.content ?: "An unknown error occured saving the secret to HashiCorp Vault")
       }
     } catch(Exception ex) {
       response = ServiceResponse.error("An error occured saving the secret from HashiCorp Vault")
@@ -106,7 +106,7 @@ abstract class AbstractVaultEngine implements VaultEngineInterface {
       if (apiResults.success) {
         response = ServiceResponse.success(apiResults.data as Map)
       } else {
-        response = ServiceResponse.error(apiResults.error)
+        response = ServiceResponse.error(apiResults.error ?: apiResults.content ?: "An unknown error occured reading the secret from HashiCorp Vault")
       }
     } catch(Exception ex) {
       response = ServiceResponse.error("An error occured reading the secret from HashiCorp Vault")
