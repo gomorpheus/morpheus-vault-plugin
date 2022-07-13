@@ -68,7 +68,7 @@ jar {
 				'Plugin-Version': version,
 				'Morpheus-Name': 'Hashicorp Vault',
 				'Morpheus-Organization': 'morpheus',
-				'Morpheus-Code': 'hashicorp-vault-plugin',
+				'Morpheus-Code': 'vault-plugin',
 				'Morpheus-Description': 'Morpheus plugin for storing and fetching secret data to/from a HashiCorp Vault Server',
 				'Morpheus-Logo': 'assets/hashicorpvault-black.svg',
 				'Morpheus-Logo-Dark': 'assets/hashicorpvault-white.svg',
