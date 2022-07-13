@@ -33,8 +33,9 @@ configurations {
 }
 
 dependencies {
-	provided "com.morpheusdata:morpheus-plugin-api:0.13.1-SNAPSHOT"
+	provided "com.morpheusdata:morpheus-plugin-api:0.13.1"
 	provided "org.codehaus.groovy:groovy-all:$groovyVersion"
+  provided('com.morpheusdata:cypher-core:0.8.0')
 	implementation 'commons-beanutils:commons-beanutils:1.9.3'
 	implementation "org.slf4j:slf4j-api:$slf4jVersion"
 	implementation "org.slf4j:slf4j-parent:$slf4jVersion"
@@ -63,16 +64,16 @@ sourceSets {
 jar {
 	manifest {
 		attributes(
-				'Plugin-Class': 'com.morpheusdata.vault.VaultPlugin',
+				'Plugin-Class': 'com.morpheusdata.vault.HashiCorpVaultPlugin',
 				'Plugin-Version': version,
 				'Morpheus-Name': 'Hashicorp Vault',
 				'Morpheus-Organization': 'morpheus',
-				'Morpheus-Code': 'vault-plugin',
-				'Morpheus-Description': 'Plugin for Vault Credential Storage',
+				'Morpheus-Code': 'hashicorp-vault-plugin',
+				'Morpheus-Description': 'Morpheus plugin for storing and fetching secret data to/from a HashiCorp Vault Server',
 				'Morpheus-Logo': 'assets/hashicorpvault-black.svg',
 				'Morpheus-Logo-Dark': 'assets/hashicorpvault-white.svg',
 				'Morpheus-Color': '#ffffff',
-				'Morpheus-Labels': 'Plugin, Credentials, Vault',
+				'Morpheus-Labels': 'Plugin, Credentials, Cypher, Vault',
 				'Morpheus-Repo': 'https://github.com/gomorpheus/morpheus-vault-plugin',
 				'Morpheus-Min-Appliance-Version': "5.5.0"
 		)
