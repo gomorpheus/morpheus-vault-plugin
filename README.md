@@ -17,7 +17,7 @@ A jar will be produced in the `build/lib` folder that can be uploaded into a Mor
 
 #### Cypher
 
-A Version 1.0.0 video demo of the Cypher plugin provider can be found here: https://d.pr/v/i5k5MS. **In version 1.2.0 and above use the “vault” mountpoint instead of “hashicorpVault”**
+Please refer to https://docs.morpheusdata.com/en/latest/tools/cypher.html#vault in version 5.5.1 for details on the plugin and how it works with the native vault integration.
 
 #### Credentials
 
