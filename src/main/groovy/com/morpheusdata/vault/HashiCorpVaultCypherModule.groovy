@@ -101,12 +101,13 @@ class HashiCorpVaultCypherModule implements CypherModule {
       
       if (response.getSuccess()) {
         value = new JsonBuilder(response.getData())?.toString()
-      }
-      
-      try {
-        return getCypherObject(key, value, leaseTimeout, leaseObjectRef, createdBy, false)
-      } catch(Exception ex) {
-        ex.printStackTrace()
+        try {
+          return getCypherObject(key, value, leaseTimeout, leaseObjectRef, createdBy, false)
+        } catch(Exception ex) {
+          ex.printStackTrace()
+          return null
+        }
+      } else {
         return null
       }
     }
