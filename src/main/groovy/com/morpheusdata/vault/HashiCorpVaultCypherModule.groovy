@@ -31,6 +31,11 @@ class HashiCorpVaultCypherModule implements CypherModule {
   }
   
   @Override
+  public Boolean alwaysRead() {
+    return true
+  }
+  
+  @Override
   public CypherObject write(String relativeKey, String path, String value, Long leaseTimeout, String leaseObjectRef, String createdBy) {
     if(value != null && value.length() > 0) {
       String key = relativeKey
@@ -39,8 +44,8 @@ class HashiCorpVaultCypherModule implements CypherModule {
       if(path != null) {
         key = path + "/" + key
       }
-      if(relativeKey.startsWith("config/")) {
-        return new CypherObject(key,value,0l, leaseObjectRef, createdBy)
+      if(relativeKey.startsWith("config/")) {        
+        return getCypherObject(key, value, 0l, leaseObjectRef, createdBy)
       } else {
         String vaultUrl = this.getVaultUrl()
         String vaultToken = this.getVaultToken()
@@ -61,7 +66,7 @@ class HashiCorpVaultCypherModule implements CypherModule {
         
         ServiceResponse response = vaultApiEngine.save(vaultPath, body, vaultUrl, vaultToken)
         if (response.getSuccess()) {
-          return new CypherObject(key,value,leaseTimeout, leaseObjectRef, createdBy)
+          return getCypherObject(key, value, leaseTimeout, leaseObjectRef, createdBy)
         } else {
           return null
         }
@@ -99,10 +104,7 @@ class HashiCorpVaultCypherModule implements CypherModule {
       }
       
       try {
-        CypherObject vaultResult = new CypherObject(key,value,leaseTimeout,leaseObjectRef, createdBy)
-        vaultResult.shouldPersist = false
-        return vaultResult
-
+        return getCypherObject(key, value, leaseTimeout, leaseObjectRef, createdBy, false)
       } catch(Exception ex) {
         ex.printStackTrace()
         return null
@@ -147,6 +149,12 @@ class HashiCorpVaultCypherModule implements CypherModule {
   
   private String getVaultToken() {
     return HashiCorpVaultPluginUtil.getVaultToken(this.morpheusContext, this.plugin, this.cypher)
+  }
+  
+  private CypherObject getCypherObject(key, value, leaseTimeout, leaseObjectRef, createdBy, shouldPersist = true) {
+    CypherObject rtn = new CypherObject(key, value, leaseTimeout, leaseObjectRef, createdBy)
+    rtn.shouldPersist = shouldPersist //important to stop Cypher objects from being stored within internal crypt database
+    return rtn
   }
 
 }
