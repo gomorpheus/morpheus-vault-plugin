@@ -3,7 +3,9 @@ import com.morpheusdata.core.MorpheusContext
 import com.morpheusdata.cypher.Cypher
 import com.morpheusdata.core.Plugin
 import groovy.json.*
+import groovy.util.logging.Slf4j
 
+@Slf4j
 class HashiCorpVaultPluginUtil {
   
   private static final String KV1_ENGINE_CODE = "KV1"
@@ -69,20 +71,26 @@ class HashiCorpVaultPluginUtil {
   }
 
   private static getSettings(MorpheusContext morpheusContext, Plugin plugin) {
-    def settings = morpheusContext.getSettings(plugin)
-    def settingsOutput = ""
-    settings.subscribe(
-      { outData -> 
-        settingsOutput = outData
-      },
-      { error ->
-        println error.printStackTrace()
-      }
-    )
-
-    JsonSlurper slurper = new JsonSlurper()
-    def settingsJson = slurper.parseText(settingsOutput)
-    return settingsJson
+    def settingsOutput = null
+    try {
+      def settings = morpheusContext.getSettings(plugin)
+      settings.subscribe(
+        { outData -> 
+          settingsOutput = outData
+        },
+        { error ->
+          println error.printStackTrace()
+        }
+      )
+    } catch(Exception e) {
+      log.error("Error obtaining HashiCorpVault plugin settings")
+    }
+    if (settingsOutput) {
+      JsonSlurper slurper = new JsonSlurper()
+      return slurper.parseText(settingsOutput)
+    } else {
+      return [:]
+    }
   }
 
 }
