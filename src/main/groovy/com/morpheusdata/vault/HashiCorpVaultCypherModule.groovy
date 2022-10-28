@@ -1,7 +1,7 @@
 package com.morpheusdata.vault
 
 import com.morpheusdata.cypher.Cypher
-import com.morpheusdata.cypher.CypherModule
+import com.morpheusdata.cypher.modules.AbstractCypherModule
 import com.morpheusdata.cypher.CypherObject
 import com.morpheusdata.vault.util.*
 import groovy.util.logging.Slf4j
@@ -11,7 +11,7 @@ import com.morpheusdata.response.ServiceResponse
 import groovy.json.*
 
 @Slf4j
-class HashiCorpVaultCypherModule implements CypherModule {
+class HashiCorpVaultCypherModule extends AbstractCypherModule {
 
   Cypher cypher
   MorpheusContext morpheusContext
@@ -31,8 +31,8 @@ class HashiCorpVaultCypherModule implements CypherModule {
   }
   
   @Override
-  public Boolean alwaysRead() {
-    return true
+  public Boolean readFromDatastore() {
+    return false //important to ensure reads are always obtained from vault
   }
   
   @Override
