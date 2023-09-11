@@ -26,8 +26,8 @@ class HashiCorpVaultPlugin extends Plugin {
 		this.setName("HashiCorp Vault")
 		this.setDescription("HashiCorp Vault Plugin")
 		this.setAuthor("Morpheus")
-		this.setSourceCodeLocationUrl("https://github.com/cpdtaylor/morpheus-hashicorp-vault-plugin")
-		this.setIssueTrackerUrl("https://github.com/cpdtaylor/morpheus-hashicorp-vault-plugin/issues")
+		this.setSourceCodeLocationUrl("https://github.com/gomorpheus/morpheus-vault-plugin")
+		this.setIssueTrackerUrl("https://github.com/gomorpheus/morpheus-vault-plugin/issues")
 		
 		this.settings << new OptionType (
 			name: 'HashiCorp Vault Url',
