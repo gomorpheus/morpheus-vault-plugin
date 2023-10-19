@@ -7,7 +7,8 @@ buildscript {
     dependencies {
         classpath "com.github.jengelman.gradle.plugins:shadow:6.0.0"
         classpath "com.bertramlabs.plugins:asset-pipeline-gradle:$assetPipelineVersion"
-    }
+		classpath "com.morpheusdata:morpheus-plugin-gradle:$morpheusPluginApiVersion"
+	}
 }
 
 
@@ -17,6 +18,7 @@ apply plugin: 'groovy'
 apply plugin: 'idea'
 apply plugin: 'com.github.johnrengelman.shadow'
 apply plugin: 'asset-pipeline'
+apply plugin: 'com.morpheusdata.morpheus-plugin-gradle'
 
 group = 'com.morpheusdata.vault'
 sourceCompatibility = '1.11'
@@ -33,16 +35,16 @@ configurations {
 }
 
 dependencies {
-	provided "com.morpheusdata:morpheus-plugin-api:0.13.1"
+	provided "com.morpheusdata:morpheus-plugin-api:$morpheusPluginApiVersion"
 	provided "org.codehaus.groovy:groovy-all:$groovyVersion"
-  provided('com.morpheusdata:cypher-core:0.10.0')
+  	provided('com.morpheusdata:cypher-core:0.10.0')
 	implementation 'commons-beanutils:commons-beanutils:1.9.3'
 	implementation "org.slf4j:slf4j-api:$slf4jVersion"
 	implementation "org.slf4j:slf4j-parent:$slf4jVersion"
 	implementation 'commons-net:commons-net:3.6'
 
 	// Include morpheus-core and it's dependencies
-	testImplementation 'io.reactivex.rxjava2:rxjava:2.2.0'
+	testImplementation 'io.reactivex.rxjava3:rxjava:3.1.8'
 	testImplementation 'org.apache.httpcomponents:httpclient:4.5.3'
 	testImplementation 'org.apache.httpcomponents:httpcore:4.4.5'
 	testImplementation "org.slf4j:slf4j-parent:$slf4jVersion"
@@ -75,7 +77,7 @@ jar {
 				'Morpheus-Color': '#ffffff',
 				'Morpheus-Labels': 'Plugin, Credentials, Cypher, Vault',
 				'Morpheus-Repo': 'https://github.com/gomorpheus/morpheus-vault-plugin',
-				'Morpheus-Min-Appliance-Version': "5.5.2"
+				'Morpheus-Min-Appliance-Version': morpheusApplianceMinVersion
 		)
 	}
 }
