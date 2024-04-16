@@ -51,7 +51,7 @@ class HashiCorpVaultCredentialProvider implements CredentialProvider {
     String name = formatApiName(credential.name)
     
     String vaultPath = vaultEngine.getFullVaultPath(engineMount, secretPathSuffix, name)
-    ServiceResponse response = vaultEngine.read(vaultPath, vaultUrl, vaultToken)
+    ServiceResponse response = vaultEngine.read(vaultPath, vaultUrl, vaultToken, this.morpheusContext)
 
     if(response.getSuccess()) {
       return new ServiceResponse<>(true,null,null,response.getData() as Map)
@@ -77,7 +77,7 @@ class HashiCorpVaultCredentialProvider implements CredentialProvider {
     String name = formatApiName(credential.name)
     
     String vaultPath = vaultEngine.getFullVaultPath(engineMount, secretPathSuffix, name)
-    ServiceResponse response = vaultEngine.delete(vaultPath, vaultUrl, vaultToken)
+    ServiceResponse response = vaultEngine.delete(vaultPath, vaultUrl, vaultToken, this.morpheusContext)
   
     if(response.getSuccess()) {
       return new ServiceResponse<>(true,null,null,credential)
@@ -104,7 +104,7 @@ class HashiCorpVaultCredentialProvider implements CredentialProvider {
     String name = formatApiName(credential.name)
     
     String vaultPath = vaultEngine.getFullVaultPath(engineMount, secretPathSuffix, name)
-    ServiceResponse response = vaultEngine.save(vaultPath, credential.data, vaultUrl, vaultToken)
+    ServiceResponse response = vaultEngine.save(vaultPath, credential.data, vaultUrl, vaultToken, this.morpheusContext)
 
     if(response.getSuccess()) {
       return new ServiceResponse<>(true,null,null,credential)
@@ -131,7 +131,7 @@ class HashiCorpVaultCredentialProvider implements CredentialProvider {
     String name = formatApiName(credential.name)
     
     String vaultPath = vaultEngine.getFullVaultPath(engineMount, secretPathSuffix, name)
-    ServiceResponse response = vaultEngine.save(vaultPath, credential.data, vaultUrl, vaultToken)
+    ServiceResponse response = vaultEngine.save(vaultPath, credential.data, vaultUrl, vaultToken, this.morpheusContext)
 
     if(response.getSuccess()) {
       return new ServiceResponse<>(true,null,null,credential)
@@ -154,7 +154,7 @@ class HashiCorpVaultCredentialProvider implements CredentialProvider {
   ServiceResponse<Map> verify(AccountIntegration integration, Map opts) {
     AbstractVaultEngine vaultEngine = HashiCorpVaultPluginUtil.getVaultEngine(getEngineCode(integration))
     def vaultUrl = this.getVaultUrl(integration)
-    return vaultEngine.checkHealth(vaultUrl)
+    return vaultEngine.checkHealth(vaultUrl, this.morpheusContext)
   }
 
   /**

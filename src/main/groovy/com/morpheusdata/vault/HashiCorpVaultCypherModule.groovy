@@ -64,7 +64,7 @@ class HashiCorpVaultCypherModule extends AbstractCypherModule {
           return null
         }
         
-        ServiceResponse response = vaultApiEngine.save(vaultPath, body, vaultUrl, vaultToken)
+        ServiceResponse response = vaultApiEngine.save(vaultPath, body, vaultUrl, vaultToken, this.morpheusContext)
         if (response.getSuccess()) {
           return getCypherObject(key, value, leaseTimeout, leaseObjectRef, createdBy)
         } else {
@@ -97,7 +97,7 @@ class HashiCorpVaultCypherModule extends AbstractCypherModule {
         vaultPath = HashiCorpVaultPluginUtil.getVaultPath(relativeKey) ?: relativeKey
       }
       
-      ServiceResponse response = vaultApiEngine.read(vaultPath, vaultUrl, vaultToken)
+      ServiceResponse response = vaultApiEngine.read(vaultPath, vaultUrl, vaultToken, this.morpheusContext)
       
       if (response.getSuccess()) {
         value = new JsonBuilder(response.getData())?.toString()
@@ -128,7 +128,7 @@ class HashiCorpVaultCypherModule extends AbstractCypherModule {
       } else {
         vaultPath = HashiCorpVaultPluginUtil.getVaultPath(relativeKey) ?: relativeKey
       }
-      return vaultApiEngine.delete(vaultPath, vaultUrl, vaultToken)?.getSuccess()      
+      return vaultApiEngine.delete(vaultPath, vaultUrl, vaultToken, this.morpheusContext)?.getSuccess()
     }
   }
 

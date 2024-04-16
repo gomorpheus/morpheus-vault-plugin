@@ -2,6 +2,7 @@ package com.morpheusdata.vault.util
 import com.morpheusdata.core.util.ConnectionUtils
 import com.morpheusdata.core.util.HttpApiClient
 import com.morpheusdata.response.ServiceResponse
+import com.morpheusdata.core.MorpheusContext
 
 abstract class AbstractVaultEngine implements VaultEngineInterface {
   
@@ -9,11 +10,11 @@ abstract class AbstractVaultEngine implements VaultEngineInterface {
 
   public static final String DEFAULT_API_VERSION = "v1"
 
-  public abstract ServiceResponse delete(String vaultPath, String vaultUrl, String vaultToken)
+  public abstract ServiceResponse delete(String vaultPath, String vaultUrl, String vaultToken, MorpheusContext morpheusContext)
 
-  public abstract ServiceResponse read(String vaultPath, String vaultUrl, String vaultToken)
+  public abstract ServiceResponse read(String vaultPath, String vaultUrl, String vaultToken, MorpheusContext morpheusContext)
 
-  public abstract ServiceResponse save(String vaultPath, Map value, String vaultUrl, String vaultToken)
+  public abstract ServiceResponse save(String vaultPath, Map value, String vaultUrl, String vaultToken, MorpheusContext morpheusContext)
       
   public abstract String getDescription()
   
@@ -33,8 +34,9 @@ abstract class AbstractVaultEngine implements VaultEngineInterface {
     return engineMount + "/" + secretPathSuffix + "/" + name
   }
   
-  public ServiceResponse checkHealth(String vaultUrl) {
+  public ServiceResponse checkHealth(String vaultUrl, MorpheusContext morpheusContext) {
     HttpApiClient apiClient = new HttpApiClient()
+    apiClient.networkProxy = morpheusContext.services.setting.getGlobalNetworkProxy()
     try {
       def apiResults = apiClient.callJsonApi(vaultUrl,'/v1/sys/health',new HttpApiClient.RequestOptions(),'GET')
       if(apiResults.success) {
@@ -55,8 +57,9 @@ abstract class AbstractVaultEngine implements VaultEngineInterface {
     return "/" + version + "/"
   }
 
-  private ServiceResponse _delete(String vaultPath, String vaultUrl, String vaultToken) {
+  private ServiceResponse _delete(String vaultPath, String vaultUrl, String vaultToken, MorpheusContext morpheusContext) {
     HttpApiClient apiClient = new HttpApiClient()
+    apiClient.networkProxy = morpheusContext.services.setting.getGlobalNetworkProxy()
     HttpApiClient.RequestOptions restOptions = this.createRestApiOptions(vaultToken)
     vaultPath = this.getBasePath() + vaultPath
     ServiceResponse response
@@ -75,8 +78,9 @@ abstract class AbstractVaultEngine implements VaultEngineInterface {
     return response
   }
 
-  private ServiceResponse _save(String vaultPath, Map body, String vaultUrl, String vaultToken) {
+  private ServiceResponse _save(String vaultPath, Map body, String vaultUrl, String vaultToken, MorpheusContext morpheusContext) {
     HttpApiClient apiClient = new HttpApiClient()
+    apiClient.networkProxy = morpheusContext.services.setting.getGlobalNetworkProxy()
     ServiceResponse response
     HttpApiClient.RequestOptions restOptions = this.createRestApiOptions(vaultToken)
     vaultPath = this.getBasePath() + vaultPath
@@ -96,8 +100,9 @@ abstract class AbstractVaultEngine implements VaultEngineInterface {
     return response
   }
 
-  private ServiceResponse _read(String vaultPath, String vaultUrl, String vaultToken) {
+  private ServiceResponse _read(String vaultPath, String vaultUrl, String vaultToken, MorpheusContext morpheusContext) {
     HttpApiClient apiClient = new HttpApiClient()
+    apiClient.networkProxy = morpheusContext.services.setting.getGlobalNetworkProxy()
     HttpApiClient.RequestOptions restOptions = this.createRestApiOptions(vaultToken)
     vaultPath = this.getBasePath() + vaultPath
     ServiceResponse response
