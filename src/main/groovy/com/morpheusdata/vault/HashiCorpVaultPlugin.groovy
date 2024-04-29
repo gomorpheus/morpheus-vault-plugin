@@ -1,5 +1,6 @@
 package com.morpheusdata.vault
 
+import com.morpheusdata.core.MorpheusContext
 import com.morpheusdata.core.Plugin
 import com.morpheusdata.model.Permission
 import com.morpheusdata.model.OptionType
