@@ -31,7 +31,11 @@ abstract class AbstractVaultEngine implements VaultEngineInterface {
   }
   
   public String getFullVaultPath(String engineMount, String secretPathSuffix, String name, Map opts = [:]) {
-    return engineMount + "/" + secretPathSuffix + "/" + name
+    if(secretPathSuffix.endsWith('/')) {
+      return engineMount + "/" + secretPathSuffix + name
+    } else {
+      return engineMount + "/" + secretPathSuffix + "/" + name
+    }
   }
   
   public ServiceResponse checkHealth(String vaultUrl, MorpheusContext morpheusContext) {

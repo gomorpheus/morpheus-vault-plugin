@@ -26,7 +26,11 @@ class Kv2VaultEngine extends AbstractVaultEngine {
   
   @Override
   public String getFullVaultPath(String engineMount, String secretPathSuffix, String name, Map opts = [:]) {
-    return engineMount + "/data/" + secretPathSuffix + "/" + name
+    if(secretPathSuffix.endsWith('/')) {
+      return engineMount + "/data/" + secretPathSuffix + name
+    } else {
+      return engineMount + "/data/" + secretPathSuffix + "/" + name
+    }
   }
   
   public String getDescription() {
