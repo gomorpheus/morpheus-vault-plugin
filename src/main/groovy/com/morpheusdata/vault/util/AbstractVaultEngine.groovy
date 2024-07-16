@@ -38,16 +38,20 @@ abstract class AbstractVaultEngine implements VaultEngineInterface {
     }
   }
   
-  public ServiceResponse checkHealth(String vaultUrl, MorpheusContext morpheusContext) {
+  public ServiceResponse checkToken(String vaultUrl, String vaultToken, MorpheusContext morpheusContext) {
     HttpApiClient apiClient = new HttpApiClient()
     apiClient.networkProxy = morpheusContext.services.setting.getGlobalNetworkProxy()
     try {
-      def apiResults = apiClient.callJsonApi(vaultUrl,'/v1/sys/health',new HttpApiClient.RequestOptions(),'GET')
+      def apiResults = apiClient.callJsonApi(vaultUrl,'/v1/auth/token/lookup-self',this.createRestApiOptions(vaultToken),'GET')
       if(apiResults.success) {
         ServiceResponse<Map> response = new ServiceResponse<>(true,null,null,[:])
         return response
       } else {
-        return ServiceResponse.error(apiResults.error,null,[:])
+        if(apiResults.error) {
+          return ServiceResponse.error(apiResults.error)
+        } else {
+          return ServiceResponse.error("Authentication Failed with HashiCorp Vault")
+        }
       }
     } finally {
       apiClient.shutdownClient()

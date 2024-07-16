@@ -37,7 +37,7 @@ class HashiCorpVaultPluginUtil {
   public static String getVaultToken(MorpheusContext morpheusContext, Plugin plugin, Cypher cypher = null) {
     def rtn
     def settings = getSettings(morpheusContext, plugin)
-    if (settings.hashicorpVaultPluginUrl) {
+    if (settings.hashicorpVaultPluginToken) {
       rtn = settings.hashicorpVaultPluginToken
     } else {
       if (cypher) {

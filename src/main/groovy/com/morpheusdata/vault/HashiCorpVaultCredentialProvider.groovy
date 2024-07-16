@@ -154,7 +154,18 @@ class HashiCorpVaultCredentialProvider implements CredentialProvider {
   ServiceResponse<Map> verify(AccountIntegration integration, Map opts) {
     AbstractVaultEngine vaultEngine = HashiCorpVaultPluginUtil.getVaultEngine(getEngineCode(integration))
     def vaultUrl = this.getVaultUrl(integration)
-    return vaultEngine.checkHealth(vaultUrl, this.morpheusContext)
+    def vaultToken = this.getVaultToken(integration)
+    ServiceResponse validationResponse = ServiceResponse.create([success: true])
+    if(!vaultUrl) {
+      validationResponse.addError('serviceUrl', 'API URL is required in either the integration or plugin')
+    }
+    if(!vaultToken) {
+      validationResponse.addError('serviceToken', 'Token is required in either the integration or plugin')
+    }
+    if(validationResponse.hasErrors()) {
+      return validationResponse
+    }
+    return vaultEngine.checkToken(vaultUrl, vaultToken, this.morpheusContext)
   }
 
   /**
@@ -164,8 +175,8 @@ class HashiCorpVaultCredentialProvider implements CredentialProvider {
   @Override
   List<OptionType> getIntegrationOptionTypes() {
     return [
-      new OptionType(code: 'vault.serviceUrl', name: 'Service URL', inputType: OptionType.InputType.TEXT, fieldName: 'serviceUrl', fieldLabel: 'API Url', fieldContext: 'domain', displayOrder: 0),
-      new OptionType(code: 'vault.serviceToken', name: 'Service Token', inputType: OptionType.InputType.PASSWORD, fieldName: 'serviceToken', fieldLabel: 'Token', fieldContext: 'domain', displayOrder: 1),
+      new OptionType(code: 'vault.serviceUrl', name: 'Service URL', inputType: OptionType.InputType.TEXT, fieldName: 'serviceUrl', fieldLabel: 'API Url', fieldContext: 'domain', displayOrder: 0, helpText: 'This value is inherited from the plugin and will override the plugin value.'),
+      new OptionType(code: 'vault.serviceToken', name: 'Service Token', inputType: OptionType.InputType.PASSWORD, fieldName: 'serviceToken', fieldLabel: 'Token', fieldContext: 'domain', displayOrder: 1, helpText: 'This value is inherited from the plugin and will override the plugin value.'),
       new OptionType(
         name: 'Secret Engines',
         code: 'vault.secretEngines',
